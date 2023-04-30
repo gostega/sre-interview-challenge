@@ -1,6 +1,9 @@
 config:
-  aws:region: ap-southeast-2
   aws:profile: james-aws-test
+  aws:region: ap-southeast-2
+  sre-challenge:cloudflare_zone_id:
+    secure: AAABAA/uT0SWDuoENt7Bl3Ivcuh2ewt4Vh3LYihXqWHX4n5OoB7+bCmhMc9uLdVDKMZRRMFs5rah4lgzHcgb0w==
   sre-challenge:errorDocument: error.html
   sre-challenge:indexDocument: index.html
   sre-challenge:path: ./simplewebsite
+  sre-challenge:public_domain_name: srechallenge.online
