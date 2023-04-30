@@ -1,0 +1,56 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-family: 'Quicksand', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100vh;
+    /* color: white; */
+    background-size: cover;
+  }
+  
+  #time {
+    font-size: 8rem;
+  }
+  
+  h1 {
+    /* color: white; */
+    margin-bottom: 3rem;
+    text-align: center;
+    /* mix-blend-mode: difference; */
+    /* filter: drop-shadow(0.05em 0.05em rgb(255, 0, 157)); */
+  }
+  
+  h2 {
+    /* color: white; */
+    text-align: center;
+    /* mix-blend-mode: difference; */
+    /* filter: drop-shadow(0.05em 0.05em rgb(255, 0, 157)); */
+    margin-bottom: 3rem; /* give some space before the next line of text */
+  }
+  
+  h3 {
+    /* color: white; */
+    text-align: center;
+    /* mix-blend-mode: difference; */
+    /* filter: drop-shadow(0.05em 0.05em rgb(255, 0, 157)); */
+    margin-bottom: 3rem;
+  }
+  
+  img {
+    border-radius: 50%;
+  }
+  
+  @media (max-width: 700px) {
+    #time {
+      font-size: 6rem;
+    }
+  }
+  
