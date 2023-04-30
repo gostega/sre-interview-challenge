@@ -2,6 +2,10 @@
 
 Deployment and documentation of a simple website.
 
+- Deployed website URL: https://srechallenge.online [WIP]
+- Deployed test environment: https://test.srechallenge.online [WIP]
+- Status/monitoring: https://status.srechallenge.online/
+
 ## To run website locally
 
 There are a few options.
