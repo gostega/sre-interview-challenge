@@ -42,6 +42,7 @@ If you don't have Python installed locally, this is a good option (assuming you 
 `docker compose up` (CTRL+C to stop), add `-d` to run in the background. `docker compose down` to stop and/or delete the container.
 
 Example output:
+
 ```log
 james@SHAKURAS:~/git/james/pinpayments-challenge$ docker compose up
 [+] Running 1/1
