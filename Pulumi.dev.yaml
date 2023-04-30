@@ -1,0 +1,6 @@
+config:
+  aws:region: ap-southeast-2
+  aws:profile: james-aws-test
+  sre-challenge:errorDocument: error.html
+  sre-challenge:indexDocument: index.html
+  sre-challenge:path: ./simplewebsite
