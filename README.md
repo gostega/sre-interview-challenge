@@ -2,8 +2,8 @@
 
 Deployment and documentation of a simple website.
 
-- Deployed website URL: https://srechallenge.online [WIP]
-- Deployed test environment: https://test.srechallenge.online [WIP]
+- Deployed website URL: https://srechallenge.online
+- Deployed test environment: https://test.srechallenge.online
 - Deployed cloudfront URL: https://d318mzutsp2tq6.cloudfront.net
 - Status/monitoring: https://status.srechallenge.online/
 
@@ -12,18 +12,25 @@ Deployment and documentation of a simple website.
 - [x] build simple website with text & image
 - [x] deploy in AWS
 - [x] upload to public Github repo
-- [ ] Provide documentation for running locally [WIP]
+- [x] Provide documentation for running locally
 - [x] Set up monitoring and alerting
+  - https://status.srechallenge.online/
 - [ ] Provide a mechanism for scaling the service [WIP]
   - Cloudfront/S3 are inherently scalable with no further action required.
-  - However since the exercise appears to require it, I am going to deliberately add an alternative deployment method that can be manually scaled.
+  - However since the exercise appears to require it, I am going to add an alternative deployment method that can be manually scaled.
 - [ ] Provide documentation for activating/scaling up
-- [ ] Add automation [WIP]
+- [x] Add automation
+  - Github actions will run and deploy on pushes to `main`
+  - I have only implemented simple pipeline automation here because I'm not so familiar with Github, my experience is primarily with Gitlab.
 - [ ] Provide network diagrams
-- [ ] Make it reasonably secure
-- [ ] Use modern standards
+- [x] Make it reasonably secure [WIP]
+  - [x] content is served from Cloudfront to hide the S3 bucket origin
+  - [ ] make bucket private [WIP]
+- [x] Use modern standards
+  - Using a pipeline deployment (Github actions) for automation and better maintainability
+  - Using IaC rather than manual configuration is considered a modern standard.
+- [x] Use modern practices in AWS
   - I chose a combination of S3 with something in front (CDN/API Gateway/WAF) which is one of the best ways of hosting a static website currently.
-- [ ] Use modern practices in AWS
 
 ## To run website locally
 
@@ -45,12 +52,12 @@ cd ./simplewebsite
 python -m SimpleHTTPServer
 ```
 
-Then go to http://localhost:PORT.  Get the port from the output.
+Then go to http://localhost:PORT. Get the port from the output.
 
 Example output:
 
 ```log
-james@SHAKURAS:~/git/james/pinpayments-challenge/simplewebsite$ python -m SimpleHTTPServer 
+james@SHAKURAS:~/git/james/pinpayments-challenge/simplewebsite$ python -m SimpleHTTPServer
 Serving HTTP on 0.0.0.0 port 8000 ...
 127.0.0.1 - - [30/Apr/2023 21:41:05] "GET / HTTP/1.1" 200 -
 127.0.0.1 - - [30/Apr/2023 21:41:05] "GET /assets/style.css HTTP/1.1" 200 -
@@ -61,6 +68,8 @@ Serving HTTP on 0.0.0.0 port 8000 ...
 ### Docker
 
 If you don't have Python installed locally, this is a good option (assuming you have Docker). Unfortunately it doesn't printout the initial text showing what port, but it should always be `http://localhost:8000`.
+
+#### Docker Compose
 
 `docker compose up` (CTRL+C to stop), add `-d` to run in the background. `docker compose down` to stop and/or delete the container.
 
@@ -75,6 +84,14 @@ pinpayments-challenge-python-1  | 172.18.0.1 - - [30/Apr/2023 13:57:21] "GET / H
 pinpayments-challenge-python-1  | 172.18.0.1 - - [30/Apr/2023 13:57:21] "GET /assets/style.css HTTP/1.1" 304 -
 pinpayments-challenge-python-1  | 172.18.0.1 - - [30/Apr/2023 13:57:21] "GET /assets/main.js HTTP/1.1" 304 -
 pinpayments-challenge-python-1  | 172.18.0.1 - - [30/Apr/2023 13:57:21] "GET /assets/perth-koondoola-evening.jpg HTTP/1.1" 304 -
+```
+
+#### Docker
+
+```bash
+cd ./simplewebsite
+docker build . -t simpleweb
+docker run -p 8000:8000 simpleweb # -d optional
 ```
 
 # Deployment
