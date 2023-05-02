@@ -181,7 +181,7 @@ resources:
     properties:
       cluster: ${cluster.arn}
       assignPublicIp: true
-      desiredCount: 4
+      desiredCount: 1
       taskDefinitionArgs:
         container:
           image: ${image.imageUri}
