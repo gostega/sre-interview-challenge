@@ -20,6 +20,9 @@ Deployment and documentation of a simple website.
 - [x] Set up monitoring and alerting
   - https://status.srechallenge.online/
   - https://internal-status.srechallenge.online/ (would not normally be public, but the free version doesn't support password protecting pages).
+- [ ] Add logging [WIP]
+  - I plan to add logging from the container to either Papertrail, Datadog or Coralogix.
+  - My main goal is observability as to which containers are being hit to see if loadbalancing and scaling are working as expected.
 - [x] Provide a mechanism for scaling the service [WIP]
   - Cloudfront/S3 are inherently scalable with no further action required.
   - However since the exercise appears to require it, I am going to add an alternative deployment method that can be manually scaled.
@@ -133,10 +136,9 @@ publicURL     : "https://srechallenge.online"
 
 # Scaling
 
-The alternate method using ECS, Fargate and ELB can be scaled by increasing the memory/cpu on the containers, or increasing the `desiredCount` of the service. 
+The alternate method using ECS, Fargate and ELB can be scaled by increasing the memory/cpu on the containers, or increasing the `desiredCount` of the service.
 
 ![draw io_PaIyFt7Amk](https://user-images.githubusercontent.com/16591081/235678557-0e499390-bdd9-4a57-86ce-815e1ef1aa2e.gif)
-
 
 ## Credits
 
