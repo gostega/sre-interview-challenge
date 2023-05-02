@@ -6,7 +6,8 @@ WORKDIR /www
 COPY ./ ./
 
 # Run the container with `docker run -p 8000:8000 <imagename>`
-EXPOSE 8000
+EXPOSE 80
 
 # -u so that it doesn't buffer the logs
-CMD ["python3", "-u", "-m", "http.server"]
+# 80 serves on port 80 to be more compatible with ECS which expects 80 by default
+CMD ["python3", "-u", "-m", "http.server", "80"]
