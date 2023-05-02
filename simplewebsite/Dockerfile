@@ -1,0 +1,12 @@
+# Extremely quick and simple dockerfile to get a basic service up
+FROM python:3.11.3-alpine3.16
+
+WORKDIR /www
+
+COPY ./ ./
+
+# Run the container with `docker run -p 8000:8000 <imagename>`
+EXPOSE 8000
+
+# -u so that it doesn't buffer the logs
+CMD ["python3", "-u", "-m", "http.server"]
