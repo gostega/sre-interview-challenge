@@ -16,7 +16,8 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       # - run: go mod download
-      - uses: pulumi/actions@v3
+      - run: pulumi config rm aws:profile # remove the local profile to make pulumi use the environment variables instead
+      - uses: pulumi/actions@v4
         with:
           command: up
           stack-name: jamest/sre-challenge/dev # When using an individual account, only use stack-name. <-- this advice from pulumi is wrong, and results in error: If you're using the --stack flag, pass the fully qualified name (org/project/stack)
