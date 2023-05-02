@@ -4,12 +4,11 @@ FROM python:3.11.3-alpine3.16
 RUN apk add curl && \
     curl -o /etc/papertrail-bundle.pem https://papertrailapp.com/tools/papertrail-bundle.pem
 
-# WORKDIR /
+WORKDIR /
 
 RUN apk add --update -t build-dependencies wget ca-certificates \
   && wget -q -O - https://github.com/papertrail/remote_syslog2/releases/download/v0.21/remote_syslog_linux_amd64.tar.gz \
   | tar -zxf - \
-  && mv remote_syslog/ /remote_syslog \
   && apk del build-dependencies \
   && rm -rf /var/cache/apk/*
 
