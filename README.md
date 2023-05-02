@@ -3,9 +3,10 @@
 Deployment and documentation of a simple website.
 
 - Deployed website URL: https://srechallenge.online
-- Deployed test environment: https://test.srechallenge.online
+- Deployed alternate environment: https://alternate.srechallenge.online
 - Deployed cloudfront URL: https://d318mzutsp2tq6.cloudfront.net
 - Status/monitoring: https://status.srechallenge.online/
+- Status/monitoring for internal services: https://internal-status.srechallenge.online/
 
 ![draw io_SwkvProLf9](https://user-images.githubusercontent.com/16591081/235646169-501c3aab-df6b-4ed3-806c-d33fded16c5b.gif)
 
@@ -20,14 +21,15 @@ Deployment and documentation of a simple website.
 - [ ] Provide a mechanism for scaling the service [WIP]
   - Cloudfront/S3 are inherently scalable with no further action required.
   - However since the exercise appears to require it, I am going to add an alternative deployment method that can be manually scaled.
-- [ ] Provide documentation for activating/scaling up
+  - I have chosen a container deployed on ECS, with an elastic load balancer in front. Cloudflare is also in front of that.
+- [ ] Provide documentation for scaling up
 - [x] Add automation
   - Github actions will run and deploy on pushes to `main`
   - I have only implemented simple pipeline automation here because I'm not so familiar with Github, my experience is primarily with Gitlab.
 - [ ] Provide network diagrams
 - [x] Make it reasonably secure [WIP]
   - [x] content is served from Cloudfront to hide the S3 bucket origin
-  - [ ] make bucket private [WIP]
+  - [ ] make bucket private [PLANNED]
 - [x] Use modern standards
   - Using a pipeline deployment (Github actions) for automation and better maintainability
   - Using IaC rather than manual configuration is considered a modern standard.
