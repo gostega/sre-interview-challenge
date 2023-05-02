@@ -7,6 +7,8 @@ Deployment and documentation of a simple website.
 - Deployed cloudfront URL: https://d318mzutsp2tq6.cloudfront.net
 - Status/monitoring: https://status.srechallenge.online/
 
+![draw io_SwkvProLf9](https://user-images.githubusercontent.com/16591081/235646169-501c3aab-df6b-4ed3-806c-d33fded16c5b.gif)
+
 ### Challenge Requirements
 
 - [x] build simple website with text & image
