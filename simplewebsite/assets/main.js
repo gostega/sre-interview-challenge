@@ -14,7 +14,7 @@ function loadPage() {
       "url('./assets/perth-koondoola-morning.jpg')";
     greeting.textContent = "Good Morning";
     document.body.style.color = "white";
-  } else if (hour < 18) {
+  } else if (hour < 17) {
     // Afternoon
     document.body.style.backgroundImage =
       "url('./assets/perth-scarborough-afternoon.jpg')";
