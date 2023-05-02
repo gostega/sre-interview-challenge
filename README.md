@@ -203,7 +203,13 @@ May 02 23:12:04 cebea6415c34 web.log 172.19.0.1 - - [02/May/2023 15:12:03] "GET 
 May 02 23:12:04 cebea6415c34 web.log 172.19.0.1 - - [02/May/2023 15:12:03] "GET /favicon.ico HTTP/1.1" 200 -
 ```
 
-Screenshots:
+#### Screenshots:
+
+Screenshot showing that individual containers can be seen (running locally)
+<img width="535" alt="image" src="https://user-images.githubusercontent.com/16591081/235727320-79ae1429-6ace-4dc4-bea0-52b5052cd8ad.png">
+
+Screenshot showing loadbalancing spread over multiple containers (running in ECS)
+<img width="670" alt="image" src="https://user-images.githubusercontent.com/16591081/235727589-4526c180-c2e4-4788-b621-405c3c71edde.png">
 
 ## Credits
 
