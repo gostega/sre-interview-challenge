@@ -13,7 +13,12 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-region: ${{ secrets.AWS_REGION }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      - run: pulumi config rm aws:profile # remove the local profile to make pulumi use the environment variables instead
+      - uses: pulumi/actions@v4
+        with:
+          command: "config rm aws:profile"
+          stack-name: jamest/sre-challenge/dev
+        env:
+          PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }} # remove the local profile to make pulumi use the environment variables instead
       - uses: pulumi/actions@v4
         with:
           command: preview
