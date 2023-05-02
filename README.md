@@ -102,7 +102,7 @@ The site can be deployed from a local terminal (Pulumi is required).
 
 It can also be deployed by a merge into the `production` branch of the Github repo.
 
-### Local deployment
+## Local Deployment
 
 1. Install pulumi
 2. Ensure AWS credentials are present in `./aws/credentials`
@@ -120,6 +120,12 @@ originHostname: "bucket-redacted.s3-website-ap-southeast-2.amazonaws.com"
 originURL     : "http://bucket-redacted.s3-website-ap-southeast-2.amazonaws.com"
 publicURL     : "https://srechallenge.online"
 ```
+
+## Automated Deployment
+
+1. Make changes (either to infrastructure, or the website code)
+2. Commit to git and push to `main` on this Github repository.
+3. The changes will be deployed automatically.
 
 ## Credits
 
