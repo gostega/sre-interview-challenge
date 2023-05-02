@@ -115,8 +115,9 @@ resources:
       zoneId: ${cloudflare_zone_id}
       name: ${public_domain_name}
       value: ${cdn.domainName}
+      proxied: true
+      ttl: 1
       type: CNAME
-      ttl: 3600
 
   # record for cert validation
   # https://www.pulumi.com/registry/packages/aws/api-docs/acm/certificatevalidation/
