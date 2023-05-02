@@ -131,6 +131,7 @@ resources:
       ttl: 60
 
   # Create a custom provider section https://www.pulumi.com/blog/deploy-to-multiple-regions/
+  # https://www.pulumi.com/registry/packages/aws/api-docs/provider/
   # Because cloudfront can only use certificates in us-east-1 [updating CloudFront Distribution (E1JEH6ICLNOYGE): InvalidViewerCertificate: The specified SSL certificate doesn't exist, isn't in us-east-1 region, isn't valid, or doesn't include a valid certificate chain.]
   # I could solve this another way by putting a load balancer or API gateway in front of cloudfront,
   # But I'm short on time.
@@ -162,6 +163,7 @@ resources:
 
   ###########################################
   #  Alternate deployment method:
+  # I didn't configure autoscaling. More info:  https://www.pulumi.com/docs/guides/crosswalk/aws/autoscaling/
   ###########################################
   repository:
     type: awsx:ecr:Repository
@@ -179,6 +181,7 @@ resources:
     properties:
       cluster: ${cluster.arn}
       assignPublicIp: true
+      desiredCount: 4
       taskDefinitionArgs:
         container:
           image: ${image.imageUri}
