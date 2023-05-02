@@ -8,6 +8,7 @@ jobs:
     name: Update
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -15,8 +16,7 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       # - run: go mod download
-      - uses: actions/checkout@v3
-      - uses: pulumi/actions@v4
+      - uses: pulumi/actions@v3
         with:
           command: up
           stack-name: jamest/sre-challenge/dev # When using an individual account, only use stack-name. <-- this advice from pulumi is wrong, and results in error: If you're using the --stack flag, pass the fully qualified name (org/project/stack)
