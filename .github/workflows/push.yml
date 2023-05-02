@@ -7,7 +7,7 @@ jobs:
   update:
     name: Update
     runs-on: ubuntu-latest
-    environment: production # just setting everything to production for this exercise
+    environment: prod # just setting everything to production for this exercise
     steps:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
