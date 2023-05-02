@@ -12,13 +12,18 @@ config:
   path:
     type: string
     default: ./simplewebsite
+
 # Export the URLs and hostnames of the bucket and distribution.
+# And other things we're interested in.
 outputs:
   cdnHostname: ${cdn.domainName}
   cdnURL: https://${cdn.domainName}
   originHostname: ${bucket.websiteEndpoint}
   originURL: http://${bucket.websiteEndpoint}
   publicURL: https://${dns_RecordMain.name}
+  lbUrl: http://${lb.loadBalancer.dnsName}
+  altURL: https://${dns_RecordAlt.name}
+
 resources:
   # Create an S3 bucket and configure it as a website.
   bucket:
@@ -153,3 +158,56 @@ resources:
       certificateArn: ${cert_ApiGatewayCertificate.arn}
       validationRecordFqdns:
         - ${dns_certValidation.name}
+
+  ###########################################
+  #  Alternate deployment method:
+  ###########################################
+  repository:
+    type: awsx:ecr:Repository
+  image:
+    type: awsx:ecr:Image
+    properties:
+      repositoryUrl: ${repository.url}
+      path: "./simplewebsite"
+  cluster:
+    type: aws:ecs:Cluster
+  lb:
+    type: awsx:lb:ApplicationLoadBalancer
+  service:
+    type: awsx:ecs:FargateService
+    properties:
+      cluster: ${cluster.arn}
+      assignPublicIp: true
+      taskDefinitionArgs:
+        container:
+          image: ${image.imageUri}
+          cpu: 512
+          memory: 128
+          essential: true
+          portMappings:
+            - targetGroup: ${lb.defaultTargetGroup}
+
+  # Add a dns record to point to the loadbalancer
+  dns_RecordAlt:
+    type: cloudflare:Record
+    options:
+      dependsOn:
+        - ${lb}
+    properties:
+      zoneId: ${cloudflare_zone_id}
+      name: alternate.${public_domain_name}
+      value: ${lb.loadBalancer.dnsName}
+      proxied: true
+      ttl: 1
+      type: CNAME
+
+  # Add a DNS record for the betteruptime custom status page
+  dns_RecordStatusInternal:
+    type: cloudflare:Record
+    properties:
+      zoneId: ${cloudflare_zone_id}
+      name: internal-status.srechallenge.online
+      value: statuspage.betteruptime.com
+      type: CNAME
+      proxied: false
+      ttl: 300
