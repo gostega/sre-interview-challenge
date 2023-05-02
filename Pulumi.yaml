@@ -18,6 +18,7 @@ outputs:
   cdnURL: https://${cdn.domainName}
   originHostname: ${bucket.websiteEndpoint}
   originURL: http://${bucket.websiteEndpoint}
+  publicURL: https://${dns_RecordMain.name}
 resources:
   # Create an S3 bucket and configure it as a website.
   bucket:
@@ -40,6 +41,8 @@ resources:
   # Create a CloudFront CDN to distribute and cache the website.
   cdn:
     properties:
+      aliases:
+        - srechallenge.online
       customErrorResponses:
         - errorCode: 404
           responseCode: 404
@@ -93,3 +96,46 @@ resources:
       blockPublicAcls: false
       bucket: ${bucket.id}
     type: aws:s3:BucketPublicAccessBlock
+
+  ##############################################
+  # Public DNS record in Cloudflare
+  dns_RecordMain:
+    type: cloudflare:Record
+    options:
+      dependsOn:
+        - ${cdn}
+    properties:
+      zoneId: ${cloudflare_zone_id}
+      name: ${public_domain_name}
+      value: ${cdn.domainName}
+      type: CNAME
+      ttl: 3600
+
+  # record for cert validation
+  # https://www.pulumi.com/registry/packages/aws/api-docs/acm/certificatevalidation/
+  dns_certValidation:
+    type: aws:route53:Record
+    properties:
+      zoneId: ${cloudflare_zone_id}
+      name: ${cert_ApiGatewayCertificate.domainValidationOptions[0].resourceRecordName}
+      records:
+        - ${cert_ApiGatewayCertificate.domainValidationOptions[0].resourceRecordValue}
+      type: ${cert_ApiGatewayCertificate.domainValidationOptions[0].resourceRecordType}
+      ttl: 60
+
+  ###########################################
+  #  A C M   C E R T   V A L I D A T I O N
+  ###########################################
+  # Create a cert for the custom API gateway domain and validate it via DNS record in cloudflare
+  # https://www.pulumi.com/registry/packages/aws/api-docs/acm/certificatevalidation/
+  cert_ApiGatewayCertificate:
+    type: aws:acm:Certificate
+    properties:
+      domainName: ${public_domain_name}
+      validationMethod: "DNS"
+  cert_ApiGatewayCertificateValidation:
+    type: aws:acm:CertificateValidation
+    properties:
+      certificateArn: ${cert_ApiGatewayCertificate.arn}
+      validationRecordFqdns:
+        - ${dns_certValidation.fqdn}

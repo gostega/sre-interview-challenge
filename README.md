@@ -2,6 +2,29 @@
 
 Deployment and documentation of a simple website.
 
+- Deployed website URL: https://srechallenge.online [WIP]
+- Deployed test environment: https://test.srechallenge.online [WIP]
+- Deployed cloudfront URL: https://d318mzutsp2tq6.cloudfront.net
+- Status/monitoring: https://status.srechallenge.online/
+
+### Challenge Requirements
+
+- [x] build simple website with text & image
+- [x] deploy in AWS
+- [x] upload to public Github repo
+- [ ] Provide documentation for running locally [WIP]
+- [x] Set up monitoring and alerting
+- [ ] Provide a mechanism for scaling the service [WIP]
+  - Cloudfront/S3 are inherently scalable with no further action required.
+  - However since the exercise appears to require it, I am going to deliberately add an alternative deployment method that can be manually scaled.
+- [ ] Provide documentation for activating/scaling up
+- [ ] Add automation [WIP]
+- [ ] Provide network diagrams
+- [ ] Make it reasonably secure
+- [ ] Use modern standards
+  - I chose a combination of S3 with something in front (CDN/API Gateway/WAF) which is one of the best ways of hosting a static website currently.
+- [ ] Use modern practices in AWS
+
 ## To run website locally
 
 There are a few options.
@@ -52,6 +75,31 @@ pinpayments-challenge-python-1  | 172.18.0.1 - - [30/Apr/2023 13:57:21] "GET / H
 pinpayments-challenge-python-1  | 172.18.0.1 - - [30/Apr/2023 13:57:21] "GET /assets/style.css HTTP/1.1" 304 -
 pinpayments-challenge-python-1  | 172.18.0.1 - - [30/Apr/2023 13:57:21] "GET /assets/main.js HTTP/1.1" 304 -
 pinpayments-challenge-python-1  | 172.18.0.1 - - [30/Apr/2023 13:57:21] "GET /assets/perth-koondoola-evening.jpg HTTP/1.1" 304 -
+```
+
+# Deployment
+
+The site can be deployed from a local terminal (Pulumi is required).
+
+It can also be deployed by a merge into the `production` branch of the Github repo.
+
+### Local deployment
+
+1. Install pulumi
+2. Ensure AWS credentials are present in `./aws/credentials`
+3. Ensure Cloudflare API token is present (`export CLOUDFLARE_API_TOKEN=xxx`)
+4. Run `pulumi stack select dev` or `pulumi stack select production` depending on requirements
+5. Run `pulumi preview` (optionally, with `--diff`)
+6. Run `pulumi up`
+
+Pulumi will output various values of interest. Such as
+
+```log
+cdnHostname   : "d318mzutsp2tq6.cloudfront.net"
+cdnURL        : "https://d318mzutsp2tq6.cloudfront.net"
+originHostname: "bucket-redacted.s3-website-ap-southeast-2.amazonaws.com"
+originURL     : "http://bucket-redacted.s3-website-ap-southeast-2.amazonaws.com"
+publicURL     : "https://srechallenge.online"
 ```
 
 ## Credits
