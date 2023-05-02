@@ -7,6 +7,7 @@ Deployment and documentation of a simple website.
 - Deployed cloudfront URL: https://d318mzutsp2tq6.cloudfront.net
 - Status/monitoring: https://status.srechallenge.online/
 - Status/monitoring for internal services: https://internal-status.srechallenge.online/
+  - (The internal page would not normally be public, but the free version doesn't support password protecting pages).
 
 ![draw io_SwkvProLf9](https://user-images.githubusercontent.com/16591081/235646169-501c3aab-df6b-4ed3-806c-d33fded16c5b.gif)
 
@@ -18,15 +19,16 @@ Deployment and documentation of a simple website.
 - [x] Provide documentation for running locally
 - [x] Set up monitoring and alerting
   - https://status.srechallenge.online/
-- [ ] Provide a mechanism for scaling the service [WIP]
+  - https://internal-status.srechallenge.online/ (would not normally be public, but the free version doesn't support password protecting pages).
+- [x] Provide a mechanism for scaling the service [WIP]
   - Cloudfront/S3 are inherently scalable with no further action required.
   - However since the exercise appears to require it, I am going to add an alternative deployment method that can be manually scaled.
   - I have chosen a container deployed on ECS, with an elastic load balancer in front. Cloudflare is also in front of that.
-- [ ] Provide documentation for scaling up
+- [ ] Provide documentation for scaling up [WIP]
 - [x] Add automation
   - Github actions will run and deploy on pushes to `main`
   - I have only implemented simple pipeline automation here because I'm not so familiar with Github, my experience is primarily with Gitlab.
-- [ ] Provide network diagrams
+- [x] Provide network diagrams
 - [x] Make it reasonably secure [WIP]
   - [x] content is served from Cloudfront to hide the S3 bucket origin
   - [ ] make bucket private [PLANNED]
@@ -128,6 +130,13 @@ publicURL     : "https://srechallenge.online"
 1. Make changes (either to infrastructure, or the website code)
 2. Commit to git and push to `main` on this Github repository.
 3. The changes will be deployed automatically.
+
+# Scaling
+
+The alternate method using ECS, Fargate and ELB can be scaled by increasing the memory/cpu on the containers, or increasing the `desiredCount` of the service. 
+
+![draw io_PaIyFt7Amk](https://user-images.githubusercontent.com/16591081/235678557-0e499390-bdd9-4a57-86ce-815e1ef1aa2e.gif)
+
 
 ## Credits
 
