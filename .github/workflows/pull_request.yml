@@ -6,10 +6,10 @@ jobs:
     name: Preview
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v3.5
-        with:
-          node-version-file: package.json
+      # - uses: actions/checkout@v2
+      # - uses: actions/setup-node@v3.5
+      #   with:
+      #     node-version-file: package.json
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
