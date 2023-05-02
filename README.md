@@ -20,9 +20,15 @@ Deployment and documentation of a simple website.
 - [x] Set up monitoring and alerting
   - https://status.srechallenge.online/
   - https://internal-status.srechallenge.online/ (would not normally be public, but the free version doesn't support password protecting pages).
-- [ ] Add logging [WIP]
+- [x] Add logging [WIP]
   - I plan to add logging from the container to either Papertrail, Datadog or Coralogix.
   - My main goal is observability as to which containers are being hit to see if loadbalancing and scaling are working as expected.
+  - Normally with docker compose or docker swarm, this would be simple to do but ECS has its own requirements.
+  - So options are:
+    - log from inside the container (there are a copule of methods I can think of for doing this)
+    - use AWS tools and configuation to ship logs out to our chosen 3rd party service
+    - Such as: https://docs.datadoghq.com/integrations/ecs_fargate/?tab=awscli
+    - Or: https://www.papertrail.com/help/amazon-ecs/
 - [x] Provide a mechanism for scaling the service [WIP]
   - Cloudfront/S3 are inherently scalable with no further action required.
   - However since the exercise appears to require it, I am going to add an alternative deployment method that can be manually scaled.
@@ -121,11 +127,14 @@ It can also be deployed by a merge into the `production` branch of the Github re
 Pulumi will output various values of interest. Such as
 
 ```log
-cdnHostname   : "d318mzutsp2tq6.cloudfront.net"
-cdnURL        : "https://d318mzutsp2tq6.cloudfront.net"
-originHostname: "bucket-redacted.s3-website-ap-southeast-2.amazonaws.com"
-originURL     : "http://bucket-redacted.s3-website-ap-southeast-2.amazonaws.com"
-publicURL     : "https://srechallenge.online"
+Outputs:
+    altURL        : "https://alternate.srechallenge.online"
+    cdnHostname   : "d318******tq6.cloudfront.net"
+    cdnURL        : "https://d318******tq6.cloudfront.net"
+    lbUrl         : "http://lb-******-1578047453.ap-southeast-2.elb.amazonaws.com"
+    originHostname: "bucket-****.s3-website-ap-southeast-2.amazonaws.com"
+    originURL     : "http://bucket-****.s3-website-ap-southeast-2.amazonaws.com"
+    publicURL     : "https://srechallenge.online"
 ```
 
 ## Automated Deployment
@@ -139,6 +148,59 @@ publicURL     : "https://srechallenge.online"
 The alternate method using ECS, Fargate and ELB can be scaled by increasing the memory/cpu on the containers, or increasing the `desiredCount` of the service.
 
 ![draw io_PaIyFt7Amk](https://user-images.githubusercontent.com/16591081/235678557-0e499390-bdd9-4a57-86ce-815e1ef1aa2e.gif)
+
+## Steps for scaling
+
+1. In `Pulumi.yaml`, find `desiredCount` and increase as required.
+
+OR
+
+1. In `Pulumi.yaml`, find `cpu:` and `memory:` and increase as desired. This will cause Fargate to reprovision on higher spec instances.
+
+> Note: this is not really required for the current use case since Cloudflare & Cloudfront caching will handle any kind of increase in load.
+
+```yaml
+service:
+  type: awsx:ecs:FargateService
+  properties:
+    cluster: ${cluster.arn}
+    assignPublicIp: true
+    desiredCount: 4 # <<<<
+    taskDefinitionArgs:
+      container:
+        image: ${image.imageUri}
+        cpu: 512 # <<<<
+        memory: 128 # <<<<
+```
+
+## Logging
+
+Logging is to papertrail. It happens from inside the container.
+
+Example:
+
+```log
+May 02 23:00:21 f247fca9c11c web.log 172.17.0.1 - - [02/May/2023 15:00:20] "GET / HTTP/1.1" 304 -
+May 02 23:03:11 745851fab700 web.log 172.17.0.1 - - [02/May/2023 15:03:10] "GET / HTTP/1.1" 200 -
+May 02 23:03:11 745851fab700 web.log 172.17.0.1 - - [02/May/2023 15:03:10] "GET /assets/main.js HTTP/1.1" 200 -
+May 02 23:03:11 745851fab700 web.log 172.17.0.1 - - [02/May/2023 15:03:10] "GET /assets/style.css HTTP/1.1" 200 -
+May 02 23:03:11 745851fab700 web.log 172.17.0.1 - - [02/May/2023 15:03:10] "GET /assets/perth-koondoola-evening.jpg HTTP/1.1" 200 -
+May 02 23:03:11 745851fab700 web.log 172.17.0.1 - - [02/May/2023 15:03:10] "GET /favicon.ico HTTP/1.1" 200 -
+May 02 23:03:12 745851fab700 web.log 172.17.0.1 - - [02/May/2023 15:03:11] "GET / HTTP/1.1" 304 -
+May 02 23:03:18 745851fab700 web.log 172.17.0.1 - - [02/May/2023 15:03:18] "GET / HTTP/1.1" 304 -
+May 02 23:05:14 2cbaa51b01c9 web.log 172.17.0.1 - - [02/May/2023 15:05:13] "GET / HTTP/1.1" 200 -
+May 02 23:05:14 2cbaa51b01c9 web.log 172.17.0.1 - - [02/May/2023 15:05:13] "GET /assets/style.css HTTP/1.1" 200 -
+May 02 23:05:14 2cbaa51b01c9 web.log 172.17.0.1 - - [02/May/2023 15:05:13] "GET /assets/main.js HTTP/1.1" 200 -
+May 02 23:05:14 2cbaa51b01c9 web.log 172.17.0.1 - - [02/May/2023 15:05:13] "GET /assets/perth-koondoola-evening.jpg HTTP/1.1" 200 -
+May 02 23:05:14 2cbaa51b01c9 web.log 172.17.0.1 - - [02/May/2023 15:05:14] "GET /favicon.ico HTTP/1.1" 200 -
+May 02 23:11:56 cebea6415c34 web.log 172.19.0.1 - - [02/May/2023 15:11:55] "GET / HTTP/1.1" 304 -
+May 02 23:12:01 cebea6415c34 web.log 172.19.0.1 - - [02/May/2023 15:12:00] "GET / HTTP/1.1" 304 -
+May 02 23:12:04 cebea6415c34 web.log 172.19.0.1 - - [02/May/2023 15:12:03] "GET / HTTP/1.1" 200 -
+May 02 23:12:04 cebea6415c34 web.log 172.19.0.1 - - [02/May/2023 15:12:03] "GET /assets/main.js HTTP/1.1" 200 -
+May 02 23:12:04 cebea6415c34 web.log 172.19.0.1 - - [02/May/2023 15:12:03] "GET /assets/style.css HTTP/1.1" 200 -
+May 02 23:12:04 cebea6415c34 web.log 172.19.0.1 - - [02/May/2023 15:12:03] "GET /assets/perth-koondoola-evening.jpg HTTP/1.1" 200 -
+May 02 23:12:04 cebea6415c34 web.log 172.19.0.1 - - [02/May/2023 15:12:03] "GET /favicon.ico HTTP/1.1" 200 -
+```
 
 ## Credits
 
