@@ -20,7 +20,7 @@ Deployment and documentation of a simple website.
 - [x] Set up monitoring and alerting
   - https://status.srechallenge.online/
   - https://internal-status.srechallenge.online/ (would not normally be public, but the free version doesn't support password protecting pages).
-- [x] Add logging [WIP]
+- [x] Add logging
   - I plan to add logging from the container to either Papertrail, Datadog or Coralogix.
   - My main goal is observability as to which containers are being hit to see if loadbalancing and scaling are working as expected.
   - Normally with docker compose or docker swarm, this would be simple to do but ECS has its own requirements.
@@ -29,11 +29,12 @@ Deployment and documentation of a simple website.
     - use AWS tools and configuation to ship logs out to our chosen 3rd party service
     - Such as: https://docs.datadoghq.com/integrations/ecs_fargate/?tab=awscli
     - Or: https://www.papertrail.com/help/amazon-ecs/
+  - I ended up adding logging into the container itself. Logs get sent to Papertrail. See screenshots below.
 - [x] Provide a mechanism for scaling the service [WIP]
   - Cloudfront/S3 are inherently scalable with no further action required.
   - However since the exercise appears to require it, I am going to add an alternative deployment method that can be manually scaled.
   - I have chosen a container deployed on ECS, with an elastic load balancer in front. Cloudflare is also in front of that.
-- [ ] Provide documentation for scaling up [WIP]
+- [x] Provide documentation for scaling up (See below)
 - [x] Add automation
   - Github actions will run and deploy on pushes to `main`
   - I have only implemented simple pipeline automation here because I'm not so familiar with Github, my experience is primarily with Gitlab.
@@ -201,6 +202,8 @@ May 02 23:12:04 cebea6415c34 web.log 172.19.0.1 - - [02/May/2023 15:12:03] "GET 
 May 02 23:12:04 cebea6415c34 web.log 172.19.0.1 - - [02/May/2023 15:12:03] "GET /assets/perth-koondoola-evening.jpg HTTP/1.1" 200 -
 May 02 23:12:04 cebea6415c34 web.log 172.19.0.1 - - [02/May/2023 15:12:03] "GET /favicon.ico HTTP/1.1" 200 -
 ```
+
+Screenshots:
 
 ## Credits
 
