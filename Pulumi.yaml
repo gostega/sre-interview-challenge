@@ -39,6 +39,7 @@ resources:
       path: ${path}
     type: synced-folder:index:S3BucketFolder
   # Create a CloudFront CDN to distribute and cache the website.
+  # Note: Cloudfront can take quite a while to update sometimes. For example the current update is 750 seconds and counting.
   cdn:
     properties:
       aliases:
@@ -81,7 +82,8 @@ resources:
         geoRestriction:
           restrictionType: none
       viewerCertificate:
-        cloudfrontDefaultCertificate: true
+        acmCertificateArn: ${cert_ApiGatewayCertificate.arn} # https://www.pulumi.com/registry/packages/aws/api-docs/cloudfront/distribution/#acmcertificatearn_yaml
+        sslSupportMethod: sni-only # required if acmCertificateArn is used
     type: aws:cloudfront:Distribution
   # Assign ownership controls to the new S3 bucket
   ownership-controls:
@@ -114,14 +116,22 @@ resources:
   # record for cert validation
   # https://www.pulumi.com/registry/packages/aws/api-docs/acm/certificatevalidation/
   dns_certValidation:
-    type: aws:route53:Record
+    type: cloudflare:Record
     properties:
       zoneId: ${cloudflare_zone_id}
       name: ${cert_ApiGatewayCertificate.domainValidationOptions[0].resourceRecordName}
-      records:
-        - ${cert_ApiGatewayCertificate.domainValidationOptions[0].resourceRecordValue}
+      value: ${cert_ApiGatewayCertificate.domainValidationOptions[0].resourceRecordValue}
       type: ${cert_ApiGatewayCertificate.domainValidationOptions[0].resourceRecordType}
       ttl: 60
+
+  # Create a custom provider section https://www.pulumi.com/blog/deploy-to-multiple-regions/
+  # Because cloudfront can only use certificates in us-east-1 [updating CloudFront Distribution (E1JEH6ICLNOYGE): InvalidViewerCertificate: The specified SSL certificate doesn't exist, isn't in us-east-1 region, isn't valid, or doesn't include a valid certificate chain.]
+  # I could solve this another way by putting a load balancer or API gateway in front of cloudfront,
+  # But I'm short on time.
+  awsEast1:
+    type: pulumi:providers:aws
+    properties:
+      region: us-east-1
 
   ###########################################
   #  A C M   C E R T   V A L I D A T I O N
@@ -130,12 +140,16 @@ resources:
   # https://www.pulumi.com/registry/packages/aws/api-docs/acm/certificatevalidation/
   cert_ApiGatewayCertificate:
     type: aws:acm:Certificate
+    options:
+      provider: ${awsEast1} # Because cloudfront can only use certificates in us-east-1
     properties:
       domainName: ${public_domain_name}
       validationMethod: "DNS"
   cert_ApiGatewayCertificateValidation:
     type: aws:acm:CertificateValidation
+    options:
+      provider: ${awsEast1} # We need to use the same region as the cert itself [error: 1 error occurred: reading ACM Certificate (arn:aws:acm:us-east-1:820371356608:certificate/1e95e5bc-afa2-49d8-bab0-34c1ffd40455): couldn't find resource]
     properties:
       certificateArn: ${cert_ApiGatewayCertificate.arn}
       validationRecordFqdns:
-        - ${dns_certValidation.fqdn}
+        - ${dns_certValidation.name}
