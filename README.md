@@ -176,9 +176,22 @@ service:
 
 ## Logging
 
-Logging is to papertrail. It happens from inside the container.
+### S3/Cloudfront method
 
-Example:
+For the S3/Cloudfront solution, there is no additional logging configured, this didn't make sense for this small solution.
+
+So for these, go to the respective AWS services & Cloudtrail to view logs.
+
+### ECS/Fargate method
+
+- Logging is to papertrail. It happens from inside the container. As the solution is simple, the logs are basic. For a more complex service or with more time, I would add a lot of additional logging for visibility and troubleshooting.
+- Container logs can also be viewed from within ECS by going to
+  - ECS > CLusters > cluster-xxxx > Services > service-xxxx > Logs
+  - Or clicking on the invidual 'Tasks' (which is what Amazon calls the containers).
+- Unfortunately I couldn't get the logs working exactly as I wanted in the time allowed, so some of the container logs are only visible in EC2 and the HTTP request logs are only in papertrail.
+- Arguably, this might actually be a useful separation but it's hard to know without having a few real troubleshooting scenarios.
+
+Example of papertrail logs (aggregated from all containers):
 
 ```log
 May 02 23:00:21 f247fca9c11c web.log 172.17.0.1 - - [02/May/2023 15:00:20] "GET / HTTP/1.1" 304 -
@@ -202,6 +215,10 @@ May 02 23:12:04 cebea6415c34 web.log 172.19.0.1 - - [02/May/2023 15:12:03] "GET 
 May 02 23:12:04 cebea6415c34 web.log 172.19.0.1 - - [02/May/2023 15:12:03] "GET /assets/perth-koondoola-evening.jpg HTTP/1.1" 200 -
 May 02 23:12:04 cebea6415c34 web.log 172.19.0.1 - - [02/May/2023 15:12:03] "GET /favicon.ico HTTP/1.1" 200 -
 ```
+
+Example of ECS logs (also aggregated, but in this screenshot there's only one container in the pool)
+
+#<insert screenshot>
 
 #### Screenshots:
 
