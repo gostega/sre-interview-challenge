@@ -9,7 +9,7 @@ Deployment and documentation of a simple website.
 - Status/monitoring for internal services: https://internal-status.srechallenge.online/
   - (The internal page would not normally be public, but the free version doesn't support password protecting pages).
 
-![draw io_SwkvProLf9](https://user-images.githubusercontent.com/16591081/235646169-501c3aab-df6b-4ed3-806c-d33fded16c5b.gif)
+![draw io_4rmgphyAf8](https://user-images.githubusercontent.com/16591081/235811429-5419dfd5-6546-42b4-9cf2-417b0cae22a1.gif)
 
 ### Challenge Requirements
 
