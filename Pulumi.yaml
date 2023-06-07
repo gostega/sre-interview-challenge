@@ -1,6 +1,6 @@
 name: sre-challenge
 runtime: yaml
-description: Pinpayments SRE Interview Challenge - James Tuson
+description: SRE Interview Challenge - James Tuson
 # Import the program's configuration settings.
 config:
   errorDocument:

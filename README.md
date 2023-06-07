@@ -1,4 +1,4 @@
-# pinpayments-challenge
+# sre-interview-challenge
 
 Deployment and documentation of a simple website.
 
@@ -73,7 +73,7 @@ Then go to http://localhost:PORT. Get the port from the output.
 Example output:
 
 ```log
-james@SHAKURAS:~/git/james/pinpayments-challenge/simplewebsite$ python -m SimpleHTTPServer
+james@SHAKURAS:~/git/james/sre-interview-challenge/simplewebsite$ python -m SimpleHTTPServer
 Serving HTTP on 0.0.0.0 port 8000 ...
 127.0.0.1 - - [30/Apr/2023 21:41:05] "GET / HTTP/1.1" 200 -
 127.0.0.1 - - [30/Apr/2023 21:41:05] "GET /assets/style.css HTTP/1.1" 200 -
@@ -92,14 +92,14 @@ If you don't have Python installed locally, this is a good option (assuming you 
 Example output:
 
 ```log
-james@SHAKURAS:~/git/james/pinpayments-challenge$ docker compose up
+james@SHAKURAS:~/git/james/sre-interview-challenge$ docker compose up
 [+] Running 1/1
- ⠿ Container pinpayments-challenge-python-1  Recreated                                                                                                                                                                                                                       0.1s
-Attaching to pinpayments-challenge-python-1
-pinpayments-challenge-python-1  | 172.18.0.1 - - [30/Apr/2023 13:57:21] "GET / HTTP/1.1" 304 -
-pinpayments-challenge-python-1  | 172.18.0.1 - - [30/Apr/2023 13:57:21] "GET /assets/style.css HTTP/1.1" 304 -
-pinpayments-challenge-python-1  | 172.18.0.1 - - [30/Apr/2023 13:57:21] "GET /assets/main.js HTTP/1.1" 304 -
-pinpayments-challenge-python-1  | 172.18.0.1 - - [30/Apr/2023 13:57:21] "GET /assets/perth-koondoola-evening.jpg HTTP/1.1" 304 -
+ ⠿ Container sre-interview-challenge-python-1  Recreated                                                                                                                                                                                                                       0.1s
+Attaching to sre-interview-challenge-python-1
+sre-interview-challenge-python-1  | 172.18.0.1 - - [30/Apr/2023 13:57:21] "GET / HTTP/1.1" 304 -
+sre-interview-challenge-python-1  | 172.18.0.1 - - [30/Apr/2023 13:57:21] "GET /assets/style.css HTTP/1.1" 304 -
+sre-interview-challenge-python-1  | 172.18.0.1 - - [30/Apr/2023 13:57:21] "GET /assets/main.js HTTP/1.1" 304 -
+sre-interview-challenge-python-1  | 172.18.0.1 - - [30/Apr/2023 13:57:21] "GET /assets/perth-koondoola-evening.jpg HTTP/1.1" 304 -
 ```
 
 #### Docker
