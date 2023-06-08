@@ -1,6 +1,6 @@
 # sre-interview-challenge
 
-Deployment and documentation of a simple website.
+For an interview challenge, I created a simple web page with two deployment methods and documentation for the whole project.
 
 - Deployed website URL: https://srechallenge.online
 - Deployed alternate environment: https://alternate.srechallenge.online
