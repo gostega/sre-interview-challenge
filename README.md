@@ -2,8 +2,9 @@
 
 For an interview challenge, I created a simple web page with two deployment methods and documentation for the whole project.
 
-- Deployed website URL: https://srechallenge.online
-- Deployed alternate environment: https://alternate.srechallenge.online
+- Deployed website URL (S3+Cloudfront): https://srechallenge.online
+- Deployed alternate environment (ECS+ELB): https://alternate.srechallenge.online
+  - Note: not currently active (was costing $60/month, roughly half ECS and half ELB)
 - Deployed cloudfront URL: https://d318mzutsp2tq6.cloudfront.net
 - Status/monitoring: https://status.srechallenge.online/
 - Status/monitoring for internal services: https://internal-status.srechallenge.online/
