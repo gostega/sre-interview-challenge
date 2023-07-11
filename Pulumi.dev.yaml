@@ -1,7 +1,7 @@
 config:
   aws:region: ap-southeast-2
-  cloudflare:api_token:
-    secure: AAABAMDP1m+PRFwIhL+B4n0THdZUWxB2GdDQFaLsoCsWFtraqvDnpTScH4BK0oLDjNuq2bt3dooWAxb90FDXMxqjNGYo0Iug
+  #cloudflare:api_token: # this token expired, new one is placed in github actions secrets
+  #  secure: AAABAMDP1m+PRFwIhL+B4n0THdZUWxB2GdDQFaLsoCsWFtraqvDnpTScH4BK0oLDjNuq2bt3dooWAxb90FDXMxqjNGYo0Iug
   sre-challenge:cloudflare_zone_id:
     secure: AAABAA/uT0SWDuoENt7Bl3Ivcuh2ewt4Vh3LYihXqWHX4n5OoB7+bCmhMc9uLdVDKMZRRMFs5rah4lgzHcgb0w==
   sre-challenge:errorDocument: error.html
