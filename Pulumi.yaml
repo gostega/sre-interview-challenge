@@ -171,7 +171,6 @@ resources:
     type: awsx:ecr:Image
     properties:
       repositoryUrl: ${repository.url}
-      path: "."
   cluster:
     type: aws:ecs:Cluster
   lb:
