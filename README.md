@@ -4,11 +4,11 @@ For an interview challenge, I created a simple web page with two deployment meth
 
 - Deployed website URL (S3+Cloudfront): https://srechallenge.online
 - Deployed alternate environment (ECS+ELB): https://alternate.srechallenge.online
-  - Note: not currently active (was costing $60/month, roughly half ECS and half ELB)
+  - Note: currently inactive (was costing $60/month, roughly half ECS and half ELB)
 - Deployed cloudfront URL: https://d318mzutsp2tq6.cloudfront.net
 - Status/monitoring: https://status.srechallenge.online/
 - Status/monitoring for internal services: https://internal-status.srechallenge.online/
-  - (The internal page would not normally be public, but the free version doesn't support password protecting pages).
+  - (Normally I'd not make the internal page public, but the free version of Better Uptime doesn't support password protecting pages).
 
 ![draw io_4rmgphyAf8](https://user-images.githubusercontent.com/16591081/235811429-5419dfd5-6546-42b4-9cf2-417b0cae22a1.gif)
 
@@ -49,7 +49,7 @@ For an interview challenge, I created a simple web page with two deployment meth
 - [x] Use modern practices in AWS
   - I chose a combination of S3 with something in front (CDN/API Gateway/WAF) which is one of the best ways of hosting a static website currently.
 
-## To run website locally
+## To run the website locally
 
 There are a few options.
 
@@ -69,7 +69,7 @@ cd ./simplewebsite
 python -m SimpleHTTPServer
 ```
 
-Then go to http://localhost:PORT. Get the port from the output.
+Then go to http://localhost:PORT. Get the port from the output. It uses 8000 by default.
 
 Example output:
 
