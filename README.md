@@ -5,7 +5,6 @@ For an interview challenge, I created a simple web page with two deployment meth
 - Deployed website URL (S3+Cloudfront): https://srechallenge.online
 - Deployed alternate environment (ECS+ELB): https://alternate.srechallenge.online
   - Note: currently inactive (was costing $60/month, roughly half ECS and half ELB)
-- Deployed cloudfront URL: https://d318mzutsp2tq6.cloudfront.net
 - Status/monitoring: https://status.srechallenge.online/
 - Status/monitoring for internal services: https://internal-status.srechallenge.online/
   - (Normally I'd not make the internal page public, but the free version of Better Uptime doesn't support password protecting pages).
@@ -115,7 +114,9 @@ docker run -p 8000:8000 simpleweb # -d optional
 
 The site can be deployed from a local terminal (Pulumi is required).
 
-It can also be deployed by a merge into the `production` branch of the Github repo.
+It can also be deployed by a merge into the `main` branch of the Github repo.
+
+> Normally I'd use a git flow type workflow, but due to time constraints and less familiarity with Github Actions I just deploy straight from main.
 
 ## Local Deployment
 
